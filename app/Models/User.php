@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'nama',
+        'email',
+        'nomor_telepon',
+        'tanggal_lahir',
+        'jenis_kelamin',
+        'password',
+        'role',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'tanggal_lahir' => 'date',
+    ];
+
+    /**
+     * Get the attributes that should be cast to native types.
+     * Handle nullable date fields
+     */
+    protected function casts(): array
+    {
+        return [
+            'tanggal_lahir' => 'date',
+        ];
+    }
+
+    // Relationships
+    public function alamatUsers()
+    {
+        return $this->hasMany(AlamatUser::class, 'id_user');
+    }
+
+    public function penjualans()
+    {
+        return $this->hasMany(Penjualan::class, 'id_user');
+    }
+
+    /**
+     * Relasi ke tabel keranjangs
+     * Satu user bisa memiliki banyak item keranjang
+     */
+    public function keranjangs()
+    {
+        return $this->hasMany(Keranjang::class, 'id_user');
+    }
+
+    /**
+     * Helper method untuk mendapatkan total item di keranjang
+     */
+    public function getCartItemCountAttribute()
+    {
+        return $this->keranjangs()->sum('jumlah');
+    }
+
+    /**
+     * Helper method untuk mendapatkan total harga keranjang
+     */
+    public function getCartTotalAttribute()
+    {
+        return $this->keranjangs()->with('barang')->get()->sum('subtotal');
+    }
+}
