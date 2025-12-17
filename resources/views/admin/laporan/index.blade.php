@@ -212,7 +212,7 @@
                                     <td class="align-middle">
                                         <a href="{{ route('admin.penjualan.show', $item->id) }}"
                                            class="btn btn-sm btn-info" title="Detail">
-                                            <i class="fas fa-eye"></i>
+                                            Detail
                                         </a>
                                     </td>
                                 </tr>
