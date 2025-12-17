@@ -207,19 +207,7 @@
                                         <p class="text-xs font-weight-bold mb-0">Rp {{ number_format($item->total_harga, 0, ',', '.') }}</p>
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        @if($item->status == 'selesai')
-                                            <span class="badge badge-sm badge-success">Selesai</span>
-                                        @elseif($item->status == 'menunggu_pembayaran')
-                                            <span class="badge badge-sm badge-warning">Menunggu Pembayaran</span>
-                                        @elseif($item->status == 'sedang_diproses')
-                                            <span class="badge badge-sm badge-info">Sedang Diproses</span>
-                                        @elseif($item->status == 'dikirim')
-                                            <span class="badge badge-sm badge-primary">Dikirim</span>
-                                        @elseif($item->status == 'sampai')
-                                            <span class="badge badge-sm badge-secondary">Sampai</span>
-                                        @else
-                                            <span class="badge badge-sm badge-danger">Dibatalkan</span>
-                                        @endif
+                                        {{ $item->status }}
                                     </td>
                                     <td class="align-middle">
                                         <a href="{{ route('admin.penjualan.show', $item->id) }}"
