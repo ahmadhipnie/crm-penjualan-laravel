@@ -369,8 +369,8 @@
                             class="text-primary font-weight-bold border border-white px-3 mr-1">Furniture</span>.Mbl
                     </h1>
                 </a>
-                <p>CUSTOM FURNITURE JAKARTA Made By Order</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Kalideres, Jakarta Barat</p>
+                <p>CUSTOM FURNITURE LAMPUNG Made By Order</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Lampung Timur, Lampung</p>
                 <p class="mb-2">
                     <i class="fa fa-envelope text-primary mr-3"></i>
                     <a href="mailto:bbfurniture10@gmail.com" class="text-dark" style="text-decoration: none;">
