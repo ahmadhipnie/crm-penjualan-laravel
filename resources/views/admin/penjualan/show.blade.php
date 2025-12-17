@@ -93,7 +93,7 @@
                         </tr>
                     </table>
 
-                    @if($penjualan->status == 'sampai' && $penjualan->gambar_bukti_sampai)
+                    @if(($penjualan->status == 'sampai' || $penjualan->status == 'selesai') && $penjualan->gambar_bukti_sampai)
                     <hr>
                     <h6 class="font-weight-bold">Bukti Sampai:</h6>
                     <img src="{{ asset('gambar_bukti_sampai/' . $penjualan->gambar_bukti_sampai) }}"
@@ -112,7 +112,7 @@
                     @foreach($penjualan->detailPenjualans as $detail)
                     <div class="media mb-3">
                         @if($detail->barang->gambarBarangs->first())
-                        <img src="{{ asset('gambar_barang/' . $detail->barang->gambarBarangs->first()->nama_file) }}"
+                        <img src="{{ asset($detail->barang->gambarBarangs->first()->gambar_url) }}"
                              alt="{{ $detail->barang->nama_barang }}"
                              class="mr-3" style="width: 80px; height: 80px; object-fit: cover;"
                              onerror="this.src='{{ asset('img/placeholder-furniture.png') }}'">

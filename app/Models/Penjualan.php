@@ -52,8 +52,8 @@ class Penjualan extends Model
     // Accessor untuk gambar bukti sampai
     public function getGambarBuktiSampaiAttribute($value)
     {
-        if ($value && file_exists(public_path($value))) {
-            return asset($value);
+        if ($value && file_exists(public_path('gambar_bukti_sampai/' . $value))) {
+            return $value;
         }
         return null;
     }

@@ -197,7 +197,7 @@
                                                     @endphp
                                                     @if($firstProduct && $firstProduct->barang)
                                                         @if($firstProduct->barang->gambarBarangs && $firstProduct->barang->gambarBarangs->first())
-                                                            <img src="{{ asset('gambar_barang/' . $firstProduct->barang->gambarBarangs->first()->gambar) }}"
+                                                            <img src="{{ asset($firstProduct->barang->gambarBarangs->first()->gambar_url) }}"
                                                                  class="avatar avatar-sm me-2" alt="{{ $firstProduct->barang->nama_barang }}">
                                                         @else
                                                             <div class="avatar avatar-sm bg-gradient-secondary me-2">
@@ -267,58 +267,71 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <!-- Timeline Status -->
-                                                <div class="mb-4">
-                                                    <h6 class="mb-3">Timeline Pengiriman</h6>
-                                                    <ul class="timeline">
-                                                        <li class="timeline-item">
-                                                            <div class="timeline-marker {{ in_array($item->status, ['sedang_diproses', 'dikirim', 'sampai', 'selesai']) ? 'active' : '' }}">
-                                                                @if(in_array($item->status, ['sedang_diproses', 'dikirim', 'sampai', 'selesai']))
-                                                                    <i class="fas fa-check"></i>
-                                                                @endif
-                                                            </div>
-                                                            <div>
-                                                                <h6 class="mb-1">Sedang Diproses</h6>
-                                                                <p class="text-xs text-muted mb-0">Pesanan sedang dikemas oleh penjual</p>
-                                                            </div>
-                                                        </li>
-                                                        <li class="timeline-item">
-                                                            <div class="timeline-marker {{ in_array($item->status, ['dikirim', 'sampai', 'selesai']) ? 'active' : '' }}">
-                                                                @if(in_array($item->status, ['dikirim', 'sampai', 'selesai']))
-                                                                    <i class="fas fa-check"></i>
-                                                                @endif
-                                                            </div>
-                                                            <div>
-                                                                <h6 class="mb-1">Dikirim</h6>
-                                                                <p class="text-xs text-muted mb-0">Pesanan dalam perjalanan</p>
-                                                            </div>
-                                                        </li>
-                                                        <li class="timeline-item">
-                                                            <div class="timeline-marker {{ in_array($item->status, ['sampai', 'selesai']) ? 'active' : '' }}">
-                                                                @if(in_array($item->status, ['sampai', 'selesai']))
-                                                                    <i class="fas fa-check"></i>
-                                                                @endif
-                                                            </div>
-                                                            <div>
-                                                                <h6 class="mb-1">Sampai</h6>
-                                                                <p class="text-xs text-muted mb-0">Pesanan telah sampai di lokasi</p>
-                                                            </div>
-                                                        </li>
-                                                        <li class="timeline-item">
-                                                            <div class="timeline-marker {{ $item->status == 'selesai' ? 'active' : '' }}">
-                                                                @if($item->status == 'selesai')
-                                                                    <i class="fas fa-check"></i>
-                                                                @endif
-                                                            </div>
-                                                            <div>
-                                                                <h6 class="mb-1">Selesai</h6>
-                                                                <p class="text-xs text-muted mb-0">Pesanan telah dikonfirmasi selesai</p>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                <!-- Timeline Status & Bukti Sampai -->
+                                                <div class="row">
+                                                    <div class="col-md-{{ (in_array($item->status, ['sampai', 'selesai']) && $item->gambar_bukti_sampai) ? '7' : '12' }}">
+                                                        <h6 class="mb-3">Timeline Pengiriman</h6>
+                                                        <ul class="timeline">
+                                                            <li class="timeline-item">
+                                                                <div class="timeline-marker {{ in_array($item->status, ['sedang_diproses', 'dikirim', 'sampai', 'selesai']) ? 'active' : '' }}">
+                                                                    @if(in_array($item->status, ['sedang_diproses', 'dikirim', 'sampai', 'selesai']))
+                                                                        <i class="fas fa-check"></i>
+                                                                    @endif
+                                                                </div>
+                                                                <div>
+                                                                    <h6 class="mb-1">Sedang Diproses</h6>
+                                                                    <p class="text-xs text-muted mb-0">Pesanan sedang dikemas oleh penjual</p>
+                                                                </div>
+                                                            </li>
+                                                            <li class="timeline-item">
+                                                                <div class="timeline-marker {{ in_array($item->status, ['dikirim', 'sampai', 'selesai']) ? 'active' : '' }}">
+                                                                    @if(in_array($item->status, ['dikirim', 'sampai', 'selesai']))
+                                                                        <i class="fas fa-check"></i>
+                                                                    @endif
+                                                                </div>
+                                                                <div>
+                                                                    <h6 class="mb-1">Dikirim</h6>
+                                                                    <p class="text-xs text-muted mb-0">Pesanan dalam perjalanan</p>
+                                                                </div>
+                                                            </li>
+                                                            <li class="timeline-item">
+                                                                <div class="timeline-marker {{ in_array($item->status, ['sampai', 'selesai']) ? 'active' : '' }}">
+                                                                    @if(in_array($item->status, ['sampai', 'selesai']))
+                                                                        <i class="fas fa-check"></i>
+                                                                    @endif
+                                                                </div>
+                                                                <div>
+                                                                    <h6 class="mb-1">Sampai</h6>
+                                                                    <p class="text-xs text-muted mb-0">Pesanan telah sampai di lokasi</p>
+                                                                </div>
+                                                            </li>
+                                                            <li class="timeline-item">
+                                                                <div class="timeline-marker {{ $item->status == 'selesai' ? 'active' : '' }}">
+                                                                    @if($item->status == 'selesai')
+                                                                        <i class="fas fa-check"></i>
+                                                                    @endif
+                                                                </div>
+                                                                <div>
+                                                                    <h6 class="mb-1">Selesai</h6>
+                                                                    <p class="text-xs text-muted mb-0">Pesanan telah dikonfirmasi selesai</p>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
 
-                                                <hr>
+                                                    @if(in_array($item->status, ['sampai', 'selesai']) && $item->gambar_bukti_sampai)
+                                                    <div class="col-md-5">
+                                                        <h6 class="mb-3">Bukti Sampai</h6>
+                                                        <div class="text-center">
+                                                            <img src="{{ asset('gambar_bukti_sampai/' . $item->gambar_bukti_sampai) }}"
+                                                                 alt="Bukti Sampai"
+                                                                 class="img-fluid rounded shadow-sm"
+                                                                 style="max-width: 100%; max-height: 300px; object-fit: cover;">
+                                                            <p class="text-xs text-muted mt-2 mb-0">Foto bukti barang telah sampai</p>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                </div>
 
                                                 <!-- Order Info -->
                                                 <div class="row mb-3">
@@ -351,7 +364,7 @@
                                                                     <td>
                                                                         <div class="d-flex align-items-center">
                                                                             @if($detail->barang && $detail->barang->gambarBarangs && $detail->barang->gambarBarangs->first())
-                                                                                <img src="{{ asset('gambar_barang/' . $detail->barang->gambarBarangs->first()->gambar) }}"
+                                                                                <img src="{{ asset($detail->barang->gambarBarangs->first()->gambar_url) }}"
                                                                                      class="avatar avatar-xs me-2" alt="{{ $detail->barang->nama_barang }}">
                                                                             @endif
                                                                             <p class="text-xs font-weight-bold mb-0">{{ $detail->barang->nama_barang ?? 'N/A' }}</p>
